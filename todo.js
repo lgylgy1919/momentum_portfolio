@@ -16,19 +16,49 @@ function deleteToDo(event){
     saveToDos();
 }
 
+function completeToDo(event){
+    const btn = event.target;
+    const li = btn.parentNode;
+    toDoList.removeChild(li);
+    const cleanToDos = toDos.filter(function(toDo){
+        return toDo.id !== parseInt(li.id);
+    });
+    toDos = cleanToDos;
+    saveToDos
+}
+
+
 function saveToDos(){
     localStorage.setItem(TODOS_LS, JSON.stringify(toDos));
 }
 
+
+
+function paintDone(){
+    const li = document.createElement("li");
+    const backBtn = document.createElement("button") 
+    
+    backBtn.innerText = "back";
+    backBtn.addEventListener("click",paintToDo)
+}
+
+
+
+
 function paintToDo(text){
     const li = document.createElement("li");
     const delBtn = document.createElement("button");
+    const comBtn = document.createElement("button");
     const span = document.createElement("span");
     
     const newId = toDos.length + 1;
     
-    delBtn.innerTexts = "❌";
+    delBtn.innerText = "❌";
     delBtn.addEventListener("click", deleteToDo);
+
+    comBtn.innerText = "O"
+    comBtn.addEventListener("click", completeToDo)
+    
     
     span.innerText = text;
     

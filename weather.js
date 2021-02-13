@@ -35,14 +35,14 @@ function handleGeoSuccess(position){
 function handleGeoError(){
     console.log("can't access geo location")
 }
-function askForCords(){
+function askForCoords(){
     navigator.geolocation.getCurrentPosition(handleGeoSuccess, handleGeoError)
 }
 
-function loadCords(){
+function loadCoords(){
     const loadedCoords = localStorage.getItem(COORDS);
     if(loadedCoords === null){
-        askForCords();
+        askForCoords();
     }else{
         const parsedCoords = JSON.parse(loadedCoords);
         getWeather(parsedCoords.latitude, parsedCoords.longitude);
@@ -50,7 +50,7 @@ function loadCords(){
 }
 
 function init(){
-    loadCords()
+    loadCoords()
 
 }
 

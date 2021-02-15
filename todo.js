@@ -5,7 +5,10 @@ doneList = document.querySelector(".js-doneList");
 
 const TODOS_LS = "toDos"
 let toDos = []
+const DONES_LS = "dones"
+let dones =[]
 
+//삭제버튼 눌렸을때 처리하기
 function deleteToDo(event){
     const btn = event.target;
     const li = btn.parentNode;
@@ -17,6 +20,7 @@ function deleteToDo(event){
     saveToDos();
 }
 
+//완료버튼 눌렀을때 처리하기
 function completeToDo(event){
     const btn = event.target;
     const li = btn.parentNode;
@@ -25,25 +29,31 @@ function completeToDo(event){
         return toDo.id !== parseInt(li.id);
     });
     toDos = cleanToDos;
-    saveToDos
+    saveDones();
+    paintToDo();
+    paintDone();
+}
+//되돌아가기 버튼(done->todo) 처리하기
+function backDone(){
+
+
+}
+//완료 후 최종 삭제하기 
+function deleteDone(){
+
 }
 
-
+//localStorage에 저장하기
 function saveToDos(){
     localStorage.setItem(TODOS_LS, JSON.stringify(toDos));
 }
-
-
-
-function paintDone(){
-    const li = document.createElement("li");
-    const backBtn = document.createElement("button") 
-    
-    backBtn.innerText = "back";
-    backBtn.addEventListener("click",paintToDo)
-    
+//localStorage에 저장하기
+function saveDones(){
+    localStorage.setItem(DONES_LS, JSON.stringify(dones))
 }
 
+
+//loadTodo에서 가져온 항목들 화면에 표시하기
 function paintToDo(text){
     const li = document.createElement("li");
     const delBtn = document.createElement("button");
@@ -74,6 +84,20 @@ function paintToDo(text){
     saveToDos()
 }
 
+//loadDone에서 가져온 항목들 화면에 표시하기
+function paintDone(){
+    const li = document.createElement("li");
+    const backBtn = document.createElement("button")
+    const delDoneBtn = document.createElement("button")
+    
+
+    backBtn.innerText = "back";
+    backBtn.addEventListener("click",backDone)
+    delDoneBtn.innerText ="delete";
+    delDoneBtn.addEventListener("click",deleteDone)
+}
+
+//입력칸에 입력한 글자 처리하기
 
 function handleSubmit(event){
     event.preventDefault();
@@ -82,6 +106,7 @@ function handleSubmit(event){
     toDoInput.value = "";
 }
 
+//localStorage에서 todo목록 불러오기
 function loadToDos(){
     const loadedToDos = localStorage.getItem(TODOS_LS);
     if (loadedToDos !== null){
@@ -91,10 +116,21 @@ function loadToDos(){
         });
     }
 }
+//localStorage에서 done목록 불러오기
+function loadDones(){
+    const loadedDones = localStorage.getItem(DONES_LS);
+    if (loadedDones !== null){
+        const parsedDones = JSON.parse(loadedDones);x
+        parsedDones.forEach(function(done){
+            paintDone(done.text)
+        })
+    }
+}
 
 
 function init(){
     loadToDos();
+    loadDones();
     toDoForm.addEventListener("submit", handleSubmit)
 }
 

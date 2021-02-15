@@ -1,6 +1,7 @@
 const toDoForm = document.querySelector(".js-toDoForm"),
 toDoInput = toDoForm.querySelector("input"),
-toDoList = document.querySelector(".js-toDoList");
+toDoList = document.querySelector(".js-toDoList"),
+doneList = document.querySelector(".js-doneList");
 
 const TODOS_LS = "toDos"
 let toDos = []
@@ -40,10 +41,8 @@ function paintDone(){
     
     backBtn.innerText = "back";
     backBtn.addEventListener("click",paintToDo)
+    
 }
-
-
-
 
 function paintToDo(text){
     const li = document.createElement("li");

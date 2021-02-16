@@ -65,12 +65,13 @@ function paintToDo(text){
     delBtn.innerText = "❌";
     delBtn.addEventListener("click", deleteToDo);
 
-    comBtn.innerText = "O"
+    comBtn.innerText = "😄"
     comBtn.addEventListener("click", completeToDo)
     
     
     span.innerText = text;
     
+    li.appendChild(comBtn)
     li.appendChild(delBtn);
     li.appendChild(span);
     li.id = newId;
@@ -85,17 +86,37 @@ function paintToDo(text){
 }
 
 //loadDone에서 가져온 항목들 화면에 표시하기
-function paintDone(){
+function paintDone(text){
     const li = document.createElement("li");
     const backBtn = document.createElement("button")
     const delDoneBtn = document.createElement("button")
+    const span = document.createElement("span");
     
 
     backBtn.innerText = "back";
-    backBtn.addEventListener("click",backDone)
+    backBtn.addEventListener("click",backDone);
     delDoneBtn.innerText ="delete";
-    delDoneBtn.addEventListener("click",deleteDone)
+    delDoneBtn.addEventListener("click",deleteDone);
+    span.innerText = text;
+
+    const newId = dones.length + 1;
+
+    
+    li.appendChild(backBtn);
+    li.appendChild(delDoneBtn);
+    li.appendChild(span);
+    li.id = newId;
+    doneList.appendChild(li);
+
+    const doneObj = {
+        text:text,
+        id:newId
+    };
+    dones.push(doneObj);
+    saveDones()
+
 }
+
 
 //입력칸에 입력한 글자 처리하기
 
@@ -116,6 +137,7 @@ function loadToDos(){
         });
     }
 }
+
 //localStorage에서 done목록 불러오기
 function loadDones(){
     const loadedDones = localStorage.getItem(DONES_LS);

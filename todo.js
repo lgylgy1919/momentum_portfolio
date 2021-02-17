@@ -20,26 +20,45 @@ function deleteToDo(event){
     saveToDos();
 }
 
-//완료버튼 눌렀을때 처리하기
+//완료버튼 눌렀을때 처리하기(todo -> done)
 function completeToDo(event){
     const btn = event.target;
     const li = btn.parentNode;
+    const text = li.querySelector("span").innerText;
     toDoList.removeChild(li);
     const cleanToDos = toDos.filter(function(toDo){
         return toDo.id !== parseInt(li.id);
     });
     toDos = cleanToDos;
-    saveDones();
-    paintToDo();
-    paintDone();
+    saveToDos();
+    paintDone(text);
 }
-//되돌아가기 버튼(done->todo) 처리하기
-function backDone(){
 
+
+//되돌아가기 버튼(done->todo) 처리하기
+function backDone(event){
+    const btn = event.target;
+    const li = btn.parentNode;
+    const text = li.querySelector("span").innerText;
+    doneList.removeChild(li);
+    const cleanDones = dones.filter(function(done){
+        return done.id !== parseInt(li.id);
+    });
+    dones = cleanDones;
+    saveDones();
+    paintToDo(text);
 
 }
 //완료 후 최종 삭제하기 
-function deleteDone(){
+function deleteDone(event){
+    const btn = event.target;
+    const li = btn.parentNode;
+    doneList.removeChild(li);
+    const cleanDones = dones.filter(function(done){
+        return done.id !== parseInt(li.id);
+    });
+    dones = cleanDones;
+    saveDones();
 
 }
 
@@ -49,7 +68,7 @@ function saveToDos(){
 }
 //localStorage에 저장하기
 function saveDones(){
-    localStorage.setItem(DONES_LS, JSON.stringify(dones))
+    localStorage.setItem(DONES_LS, JSON.stringify(dones));
 }
 
 
@@ -65,13 +84,12 @@ function paintToDo(text){
     delBtn.innerText = "❌";
     delBtn.addEventListener("click", deleteToDo);
 
-    comBtn.innerText = "😄"
-    comBtn.addEventListener("click", completeToDo)
-    
+    comBtn.innerText = "😄";
+    comBtn.addEventListener("click", completeToDo);
     
     span.innerText = text;
     
-    li.appendChild(comBtn)
+    li.appendChild(comBtn);
     li.appendChild(delBtn);
     li.appendChild(span);
     li.id = newId;
@@ -82,14 +100,14 @@ function paintToDo(text){
         id:newId
     };
     toDos.push(toDoObj);
-    saveToDos()
+    saveToDos();
 }
 
 //loadDone에서 가져온 항목들 화면에 표시하기
 function paintDone(text){
     const li = document.createElement("li");
-    const backBtn = document.createElement("button")
-    const delDoneBtn = document.createElement("button")
+    const backBtn = document.createElement("button");
+    const delDoneBtn = document.createElement("button");
     const span = document.createElement("span");
     
 
@@ -113,7 +131,7 @@ function paintDone(text){
         id:newId
     };
     dones.push(doneObj);
-    saveDones()
+    saveDones();
 
 }
 
@@ -142,7 +160,7 @@ function loadToDos(){
 function loadDones(){
     const loadedDones = localStorage.getItem(DONES_LS);
     if (loadedDones !== null){
-        const parsedDones = JSON.parse(loadedDones);x
+        const parsedDones = JSON.parse(loadedDones);
         parsedDones.forEach(function(done){
             paintDone(done.text)
         })
@@ -153,7 +171,7 @@ function loadDones(){
 function init(){
     loadToDos();
     loadDones();
-    toDoForm.addEventListener("submit", handleSubmit)
+    toDoForm.addEventListener("submit", handleSubmit);
 }
 
 init()
